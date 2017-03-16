@@ -2,7 +2,7 @@
 /**
  * Name Order
  *
- * @version    0.2 (2017-03-15 09:09:00 GMT)
+ * @version    0.3 (2017-03-16 11:08:00 GMT)
  * @author     Peter Kahl <peter.kahl@colossalmind.com>
  * @copyright  2017 Peter Kahl
  * @license    Apache License, Version 2.0
@@ -26,113 +26,171 @@ class nameOrder {
    * Version
    * @var string
    */
-  const VERSION = '0.2';
+  const VERSION = '0.3';
+
+  /**
+   * First name
+   * @var string
+   */
+  private $first;
+
+  /**
+   * Last name
+   * @var string
+   */
+  private $last;
 
   #===================================================================
 
-  /**
-   * Reorders elements of a name: 'First Last'
-   * Detects which name is surname (last) according to all upper-case
-   * (WONG Janet)
-   * and accordning a dictionary of given names.
-   * LAST First -> First Last
-   * Doe John   -> John Doe
-   * @var string
-   */
-  public static function firstLast($str) {
-    if (strpos($str, ' ') === false) {
-      return self::mb_ucname($str);
-    }
-    $first = '';
-    $last  = '';
-    $arr = explode(' ', $str);
-    foreach ($arr as $key => $val) {
-      if (mb_strlen($val) > 1 && mb_convert_case($val, MB_CASE_UPPER, "UTF-8") == $val) {
-        $last .= ' '.$val;
-      }
-      else {
-        $first .= ' '.$val;
-      }
-    }
-    $str = false;
-    $first = trim($first);
-    $last  = trim($last);
-    #----
-    if (empty($last)) {
-      $str = $first;
-      $first = '';
-      $last  = '';
-    }
-    elseif (empty($first)) {
-      $str = $last;
-      $first = '';
-      $last  = '';
-    }
-    #----
-    if (!empty($str)) {
-      $arr = explode(' ', $str);
-      require __DIR__.'/dictionary-first-names.php';
-      foreach ($arr as $key => $val) {
-        # Last name usually is not one character
-        if (mb_strlen($val) > 1 && !in_array(mb_convert_case($val, MB_CASE_LOWER, "UTF-8"), $dict)) {
-          $last .= ' '.$val;
-        }
-        else {
-          $first .= ' '.$val;
-        }
-      }
-      $first = trim($first);
-      $last  = trim($last);
-    }
-    #----
-    if (empty($last)) {
-      $str = $first;
-      $first = '';
-      $last  = '';
-      $arr = explode(' ', $str);
-      foreach ($arr as $val) {
-        if (empty($first)) {
-          $first = $val;
-        }
-        else {
-          $last .= ' '.$val;
-        }
-      }
-      $last = trim($last);
-    }
-    elseif (empty($first)) {
-      $str = $last;
-      $first = '';
-      $last  = '';
-      $arr = explode(' ', $str);
-      foreach ($arr as $val) {
-        if (empty($first)) {
-          $first = $val;
-        }
-        else {
-          $last .= ' '.$val;
-        }
-      }
-      $last = trim($last);
-    }
-    #----
-    if (preg_match('/\S+ová$/', $first)) { # Czech female last name
-      $temp  = $last;
-      $last  = $first;
-      $first = $temp;
-    }
-    #----
-    $str = trim($first.' '.$last);
-    return self::mb_ucname($str);
+  public function __construct($unordered) {
+    $this->first = '';
+    $this->last  = '';
+    $this->segment($unordered);
   }
 
   #===================================================================
 
   /**
+   * Returns 'First'
+   * @var string
+   */
+  public function getFirst() {
+    return $this->mb_ucname($this->first);
+  }
+
+  #===================================================================
+
+  /**
+   * Returns 'Last'
+   * @var string
+   */
+  public function getLast() {
+    return $this->mb_ucname($this->last);
+  }
+
+  #===================================================================
+
+  /**
+   * Returns 'First Last'
+   * @var string
+   */
+  public function getFirstLast() {
+    return $this->mb_ucname(trim($this->first.' '.$this->last));
+  }
+
+  #===================================================================
+
+  /**
+   * Returns 'Last First'
+   * @var string
+   */
+  public function getLastFirst() {
+    return $this->mb_ucname(trim($this->last.' '.$this->first));
+  }
+
+  #===================================================================
+
+  /**
+   * Detects which name is surname (last) according to all upper-case
+   * (WONG Janet) and which is given name (first)
+   * and accordning a dictionary of given names.
+   * @var string
+   */
+  private function segment($unordered) {
+    if (empty($unordered)) {
+      return;
+    }
+    if (strpos($unordered, ' ') === false) {
+      # Let's assume that it's last name
+      $this->last = $unordered;
+      return;
+    }
+    $arr = explode(' ', $unordered);
+    foreach ($arr as $key => $val) {
+      if (mb_strlen($val) > 1 && mb_convert_case($val, MB_CASE_UPPER, "UTF-8") == $val) {
+        $this->last .= ' '.$val;
+      }
+      else {
+        $this->first .= ' '.$val;
+      }
+    }
+    $unordered = false;
+    $this->first = trim($this->first);
+    $this->last  = trim($this->last);
+    #----
+    if (empty($this->last)) {
+      $unordered = $this->first;
+      $this->first = '';
+      $this->last  = '';
+    }
+    elseif (empty($this->first)) {
+      $unordered = $this->last;
+      $this->first = '';
+      $this->last  = '';
+    }
+    #----
+    if (!empty($unordered)) {
+      $arr = explode(' ', $unordered);
+      require __DIR__.'/dictionary-first-names.php';
+      foreach ($arr as $key => $val) {
+        # Last name usually isn't one character
+        if (mb_strlen($val) > 1 && !in_array(mb_convert_case($val, MB_CASE_LOWER, "UTF-8"), $dict)) {
+          $this->last .= ' '.$val;
+        }
+        else {
+          $this->first .= ' '.$val;
+        }
+      }
+      $this->first = trim($this->first);
+      $this->last  = trim($this->last);
+    }
+    #----
+    if (empty($this->last)) {
+      $unordered = $this->first;
+      $this->first = '';
+      $this->last  = '';
+      $arr = explode(' ', $unordered);
+      foreach ($arr as $val) {
+        if (empty($this->first)) {
+          $this->first = $val;
+        }
+        else {
+          $this->last .= ' '.$val;
+        }
+      }
+      $this->last = trim($this->last);
+    }
+    elseif (empty($this->first)) {
+      $unordered = $this->last;
+      $this->first = '';
+      $this->last  = '';
+      $arr = explode(' ', $unordered);
+      foreach ($arr as $val) {
+        if (empty($this->first)) {
+          $this->first = $val;
+        }
+        else {
+          $this->last .= ' '.$val;
+        }
+      }
+      $this->last = trim($this->last);
+    }
+    #----
+    if (preg_match('/\S+ová$/', $this->first)) { # Czech female last name
+      $temp  = $this->last;
+      $this->last  = $this->first;
+      $this->first = $temp;
+    }
+  }
+
+  #===================================================================
+
+  /**
+   * UC First (name)
    * Handles hyphenated names.
    * @var string
    */
-  private static function mb_ucname($str) {
+  private function mb_ucname($str) {
     $str = mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
     if (strpos($str, '-') !== false) {
       $str = implode('-', array_map('mb_ucfirst', explode('-', $str)));

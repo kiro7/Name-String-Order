@@ -1,12 +1,18 @@
 # Name-String-Order
-Attempts to order a person's name as 'First Last'.
+Attempts to order a person's name as 'First Last', 'Last First', and extracts 'First' and 'Last'.
 
 ## Usage
 
 ```php
 require __DIR__.'/nameorder.class.php';
 
-$str = nameOrder::firstLast('WANG Jing-jing');
+$nameObj = new nameOrder('WANG jing-jing');
 
-echo $str; # Jing-Jing Wang
+echo $nameObj->getFirstLast(); # Jing-Jing Wang
+
+echo $nameObj->getLastFirst(); # Wang Jing-Jing
+
+echo $nameObj->getFirst();     # Jing-Jing
+
+echo $nameObj->getLast();      # Wang
 ```
