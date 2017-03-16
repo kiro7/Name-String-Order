@@ -2,7 +2,7 @@
 /**
  * Name Order
  *
- * @version    0.1 (2017-03-15 22:39:00 GMT)
+ * @version    0.2 (2017-03-15 09:09:00 GMT)
  * @author     Peter Kahl <peter.kahl@colossalmind.com>
  * @copyright  2017 Peter Kahl
  * @license    Apache License, Version 2.0
@@ -26,7 +26,7 @@ class nameOrder {
    * Version
    * @var string
    */
-  const VERSION = '0.1';
+  const VERSION = '0.2';
 
   #===================================================================
 
@@ -39,7 +39,7 @@ class nameOrder {
    * Doe John   -> John Doe
    * @var string
    */
-  private static function firstLast($str) {
+  public static function firstLast($str) {
     if (strpos($str, ' ') === false) {
       return self::mb_ucname($str);
     }
