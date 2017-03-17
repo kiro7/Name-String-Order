@@ -1,11 +1,10 @@
 <?php
 /**
- * Name Order
  *
  * FIRST NAMES
  * Both male and female
  *
- * @version    0.1 (2017-03-15 22:39:00 GMT)
+ * @version    2017-03-17 01:07:00 GMT
  * @author     Peter Kahl <peter.kahl@colossalmind.com>
  * @copyright  2017 Peter Kahl
  * @license    Apache License, Version 2.0
@@ -836,6 +835,7 @@ $dict = array(
     'frederic',
     'frederick',
     'fredrick',
+    'fredryk',
     'gabriel',
     'gabriela',
     'gabriella',
@@ -1135,7 +1135,6 @@ $dict = array(
     'joe',
     'joel',
     'joelle',
-    'joesph',
     'joey',
     'johana',
     'johann',
