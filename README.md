@@ -4,9 +4,9 @@ Attempts to order a person's name as 'First Last', 'Last First', and extracts 'F
 ## Usage
 
 ```php
-require __DIR__.'/nameorder.class.php';
+use nameStringOrder\nameStringOrder;
 
-$nameObj = new nameOrder('WANG jing-jing');
+$nameObj = new nameStringOrder('WANG jing-jing');
 
 echo $nameObj->getFirstLast(); # Jing-Jing Wang
 

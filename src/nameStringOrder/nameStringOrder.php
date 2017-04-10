@@ -1,8 +1,8 @@
 <?php
 /**
- * Name Order
+ * Name String Order
  *
- * @version    0.3 (2017-03-16 11:08:00 GMT)
+ * @version    0.4 (2017-04-10 09:33:00 GMT)
  * @author     Peter Kahl <peter.kahl@colossalmind.com>
  * @copyright  2017 Peter Kahl
  * @license    Apache License, Version 2.0
@@ -20,13 +20,15 @@
  * limitations under the License.
  */
 
-class nameOrder {
+namespace nameStringOrder;
+
+class nameStringOrder {
 
   /**
    * Version
    * @var string
    */
-  const VERSION = '0.3';
+  const VERSION = '0.4';
 
   /**
    * First name
