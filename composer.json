@@ -1,5 +1,5 @@
 {
-    "name": "colossalmind/name-string-order",
+    "name": "peterkahl/name-string-order",
     "description": "Attempts to order a person's name as 'First Last', 'Last First', and extracts 'First' and 'Last'.",
     "homepage": "https://github.com/peterkahl/Name-String-Order",
     "license": "Apache License Version 2.0",
