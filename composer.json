@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "nameStringOrder\\": "src/nameStringOrder"
+            "peterkahl\\nameStringOrder\\": "src/"
         }
     }
 }

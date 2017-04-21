@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 
-namespace nameStringOrder;
+namespace peterkahl\nameStringOrder;
 
 class nameStringOrder {
 

@@ -4,7 +4,7 @@ Attempts to order a person's name as 'First Last', 'Last First', and extracts 'F
 ## Usage
 
 ```php
-use nameStringOrder\nameStringOrder;
+use peterkahl\nameStringOrder\nameStringOrder;
 
 $nameObj = new nameStringOrder('WANG jing-jing');
 
